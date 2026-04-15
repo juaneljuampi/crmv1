@@ -4,38 +4,20 @@ import ChatWindow from "../components/ChatWindow";
 import MessageInput from "../components/MessageInput";
 
 export default function Home() {
-  const [conversations] = useState([
-    { number: "56911111111" },
-    { number: "56922222222" }
-  ]);
-
-  const [selectedChat, setSelectedChat] = useState<any>(null);
-  const [messages, setMessages] = useState<any[]>([]);
-
-  const handleSelectChat = (chat: any) => {
-    setSelectedChat(chat);
-    setMessages([]);
-  };
-
-  const handleSend = (text: string) => {
-    const newMessage = { text, fromMe: true };
-    setMessages((prev) => [...prev, newMessage]);
-  };
+  const [selectedChat, setSelectedChat] = useState<number | null>(null);
+  const [refresh, setRefresh] = useState(0);
 
   return (
     <div className="app">
-      <Sidebar
-        conversations={conversations}
-        onSelect={handleSelectChat}
-      />
+      <Sidebar onSelect={setSelectedChat} />
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <ChatWindow
-          messages={messages}
-          selectedChat={selectedChat}
-        />
+        <ChatWindow chatId={selectedChat} refresh={refresh} />
 
-        <MessageInput onSend={handleSend} />
+        <MessageInput
+          chatId={selectedChat}
+          onMessageSent={() => setRefresh(prev => prev + 1)}
+        />
       </div>
     </div>
   );

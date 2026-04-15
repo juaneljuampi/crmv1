@@ -1,24 +1,44 @@
 import { useState } from "react";
 
 type Props = {
-  onSend: (text: string) => void;
+  chatId: number | null;
+  onMessageSent: () => void;
 };
 
-export default function MessageInput({ onSend }: Props) {
-  const [text, setText] = useState("");
+export default function MessageInput({ chatId, onMessageSent }: Props) {
+  const [number, setNumber] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSend = () => {
-    if (!text.trim()) return;
-    onSend(text);
-    setText("");
+  const handleSend = async () => {
+    if (!number || !message) return;
+
+    await fetch("https://TU-BACKEND.com/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        number,
+        message
+      })
+    });
+
+    setMessage("");
+    onMessageSent();
   };
 
   return (
     <div className="input-container">
       <input
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Escribe un mensaje"
+        placeholder="Número (569...)"
+        value={number}
+        onChange={(e) => setNumber(e.target.value)}
+      />
+
+      <input
+        placeholder="Mensaje"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
       />
 
       <button onClick={handleSend}>➤</button>

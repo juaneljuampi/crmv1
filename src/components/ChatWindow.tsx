@@ -1,14 +1,27 @@
+import { useEffect, useState } from "react";
+
 type Props = {
-  messages: any[];
-  selectedChat: any;
+  chatId: number | null;
+  refresh: number;
 };
 
-export default function ChatWindow({ messages, selectedChat }: Props) {
+export default function ChatWindow({ chatId, refresh }: Props) {
+  const [messages, setMessages] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!chatId) return;
+
+    // 🔌 AQUÍ LLAMAS TU BACKEND
+    fetch(`https://TU-BACKEND.com/messages/${chatId}`)
+      .then(res => res.json())
+      .then(data => setMessages(data));
+  }, [chatId, refresh]);
+
   return (
     <div className="chat-window">
 
       <div className="chat-header">
-        {selectedChat ? selectedChat.number : "Selecciona un chat"}
+        {chatId ? `Chat ${chatId}` : "Selecciona un chat"}
       </div>
 
       <div className="messages">

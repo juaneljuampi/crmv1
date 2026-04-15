@@ -1,22 +1,20 @@
 type Props = {
-  conversations: any[];
-  onSelect: (chat: any) => void;
+  onSelect: (chatId: number) => void;
 };
 
-export default function Sidebar({ conversations, onSelect }: Props) {
+export default function Sidebar({ onSelect }: Props) {
   return (
     <div className="sidebar">
-      <h3>Chats</h3>
+      <h3>Listado de números</h3>
 
-      {conversations.map((c, i) => (
-        <div
-          key={i}
-          className="contact"
-          onClick={() => onSelect(c)}
-        >
-          {c.number}
-        </div>
-      ))}
+      {/* EJEMPLO (puedes traer esto del backend después) */}
+      <div className="contact" onClick={() => onSelect(1)}>
+        +56911111111
+      </div>
+
+      <div className="contact" onClick={() => onSelect(2)}>
+        +56922222222
+      </div>
     </div>
   );
 }
