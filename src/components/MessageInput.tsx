@@ -6,22 +6,21 @@ type Props = {
 };
 
 export default function MessageInput({ chatId, onMessageSent }: Props) {
-  const [number, setNumber] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSend = async () => {
-    if (!number || !message) return;
+  const sendMessage = async () => {
+    if (!message.trim() || chatId === null) return;
 
-    await fetch("https://TU-BACKEND.com/send", {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/conversations`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         chatId,
-        number,
-        message
-      })
+        to: "56992144697",
+        body: message,
+      }),
     });
 
     setMessage("");
@@ -29,20 +28,17 @@ export default function MessageInput({ chatId, onMessageSent }: Props) {
   };
 
   return (
-    <div className="input-container">
+    <div className="message-input-container">
       <input
-        placeholder="Número (569...)"
-        value={number}
-        onChange={(e) => setNumber(e.target.value)}
-      />
-
-      <input
-        placeholder="Mensaje"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        placeholder="Escribe un mensaje"
+        className="message-input"
       />
 
-      <button onClick={handleSend}>➤</button>
+      <button onClick={sendMessage} className="message-send-button">
+        ➤
+      </button>
     </div>
   );
 }
