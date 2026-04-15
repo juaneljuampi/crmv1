@@ -8,21 +8,13 @@ export default function Home() {
   const [refresh, setRefresh] = useState(0);
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div className="app">
       
       {/* SIDEBAR */}
       <Sidebar onSelectChat={setSelectedChat} />
 
       {/* CHAT AREA */}
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          background: "linear-gradient(180deg, #f6d365, #fda085)",
-          padding: "20px",
-        }}
-      >
+      <div className="chat-container">
         <ChatWindow chatId={selectedChat} refresh={refresh} />
 
         <MessageInput
