@@ -18,6 +18,7 @@ export default function MessageInput({ chatId, onMessageSent }: Props) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+        chatId,
         number,
         message
       })
