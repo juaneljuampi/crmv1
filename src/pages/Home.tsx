@@ -1,34 +1,41 @@
+import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import ChatWindow from "../components/ChatWindow";
 import MessageInput from "../components/MessageInput";
-import { useState } from "react";
 
 export default function Home() {
-  const [selectedChat, setSelectedChat] = useState<number | null>(null);
-  const [refresh, setRefresh] = useState(0);
+  const [conversations] = useState([
+    { number: "56911111111" },
+    { number: "56922222222" }
+  ]);
+
+  const [selectedChat, setSelectedChat] = useState<any>(null);
+  const [messages, setMessages] = useState<any[]>([]);
+
+  const handleSelectChat = (chat: any) => {
+    setSelectedChat(chat);
+    setMessages([]);
+  };
+
+  const handleSend = (text: string) => {
+    const newMessage = { text, fromMe: true };
+    setMessages((prev) => [...prev, newMessage]);
+  };
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      
-      {/* SIDEBAR */}
-      <Sidebar onSelectChat={setSelectedChat} />
+    <div className="app">
+      <Sidebar
+        conversations={conversations}
+        onSelect={handleSelectChat}
+      />
 
-      {/* CHAT AREA */}
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          background: "linear-gradient(180deg, #f6d365, #fda085)",
-          padding: "20px",
-        }}
-      >
-        <ChatWindow chatId={selectedChat} refresh={refresh} />
-
-        <MessageInput
-          chatId={selectedChat}
-          onMessageSent={() => setRefresh(prev => prev + 1)}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <ChatWindow
+          messages={messages}
+          selectedChat={selectedChat}
         />
+
+        <MessageInput onSend={handleSend} />
       </div>
     </div>
   );
