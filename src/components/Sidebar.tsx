@@ -14,6 +14,7 @@ export default function Sidebar({ onSelectChat }: Props) {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
+  // 🔄 cargar conversaciones
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/conversations`)
       .then(res => res.json())
@@ -21,27 +22,33 @@ export default function Sidebar({ onSelectChat }: Props) {
       .catch(console.error);
   }, []);
 
+  // 📲 enviar mensaje (CORREGIDO)
   const sendCustomMessage = async () => {
     if (!phone || !message) return;
 
-    await fetch(`${import.meta.env.VITE_API_URL}/api/conversations`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: phone,
-        body: message,
-      }),
-    });
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/send-message`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          conversationId: null, // 👈 opcional (puedes mejorarlo después)
+          message: message,
+        }),
+      });
 
-    setMessage("");
+      setMessage("");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <div className="sidebar">
       <div className="sidebar-header">Chats</div>
 
+      {/* LISTA */}
       <div className="sidebar-list">
         {conversations.map((conv) => (
           <div
@@ -54,6 +61,7 @@ export default function Sidebar({ onSelectChat }: Props) {
         ))}
       </div>
 
+      {/* FORM */}
       <div className="sidebar-form">
         <input
           placeholder="569..."
