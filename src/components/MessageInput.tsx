@@ -8,18 +8,18 @@ type Props = {
 export default function MessageInput({ chatId, onMessageSent }: Props) {
   const [message, setMessage] = useState("");
 
+  // 💬 mensaje normal
   const sendMessage = async () => {
     if (!message.trim() || chatId === null) return;
 
-    await fetch(`${import.meta.env.VITE_API_URL}/api/conversations`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/send-message`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        chatId,
-        to: "56992144697",
-        body: message,
+        conversationId: chatId,
+        message,
       }),
     });
 
@@ -27,8 +27,30 @@ export default function MessageInput({ chatId, onMessageSent }: Props) {
     onMessageSent();
   };
 
+  // 🔘 BOTÓN CTA (Abrir CRM)
+  const sendCTA = async () => {
+    if (chatId === null) return;
+
+    await fetch(`${import.meta.env.VITE_API_URL}/api/send-message`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        conversationId: chatId,
+        mode: "cta",
+      }),
+    });
+  };
+
   return (
     <div className="message-input-container">
+      
+      {/* botón CTA */}
+      <button onClick={sendCTA} className="cta-button">
+        🔗
+      </button>
+
       <input
         value={message}
         onChange={(e) => setMessage(e.target.value)}

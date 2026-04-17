@@ -14,7 +14,6 @@ export default function Sidebar({ onSelectChat }: Props) {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
-  // 🔄 cargar conversaciones
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/conversations`)
       .then(res => res.json())
@@ -22,33 +21,27 @@ export default function Sidebar({ onSelectChat }: Props) {
       .catch(console.error);
   }, []);
 
-  // 📲 enviar mensaje manual
   const sendCustomMessage = async () => {
     if (!phone || !message) return;
 
-    try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/conversations`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: phone,
-          body: message,
-        }),
-      });
+    await fetch(`${import.meta.env.VITE_API_URL}/api/conversations`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: phone,
+        body: message,
+      }),
+    });
 
-      setMessage("");
-    } catch (err) {
-      console.error(err);
-    }
+    setMessage("");
   };
 
   return (
     <div className="sidebar">
-      <h2 className="sidebar-title">Chats</h2>
+      <div className="sidebar-header">Chats</div>
 
-      {/* LISTA */}
       <div className="sidebar-list">
         {conversations.map((conv) => (
           <div
@@ -61,10 +54,9 @@ export default function Sidebar({ onSelectChat }: Props) {
         ))}
       </div>
 
-      {/* FORM */}
       <div className="sidebar-form">
         <input
-          placeholder="numero (569...)"
+          placeholder="569..."
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           className="input"
@@ -78,7 +70,7 @@ export default function Sidebar({ onSelectChat }: Props) {
         />
 
         <button className="send-button" onClick={sendCustomMessage}>
-          enviar mensaje
+          Enviar
         </button>
       </div>
     </div>

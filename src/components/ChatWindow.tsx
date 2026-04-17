@@ -17,16 +17,12 @@ export default function ChatWindow({ chatId, refresh }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  // 🔄 cargar mensajes desde API
   const loadMessages = () => {
     if (!chatId) return;
 
     fetch(`${import.meta.env.VITE_API_URL}/api/messages?conversationId=${chatId}`)
       .then(res => res.json())
-      .then(data => {
-        console.log("MENSAJES:", data);
-        setMessages(data);
-      })
+      .then(setMessages)
       .catch(console.error);
   };
 
@@ -34,30 +30,26 @@ export default function ChatWindow({ chatId, refresh }: Props) {
     loadMessages();
   }, [chatId, refresh]);
 
-  // 🔥 SOCKET (mensajes en vivo)
   useEffect(() => {
-    socket.on("newMessage", (msg) => {
+    const handleNewMessage = (msg: any) => {
       if (msg.conversationId === chatId) {
         setMessages(prev => [...prev, msg]);
       }
-    });
+    };
+
+    socket.on("newMessage", handleNewMessage);
 
     return () => {
-      socket.off("newMessage");
+      socket.off("newMessage", handleNewMessage);
     };
   }, [chatId]);
 
-  // 🔽 auto scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   if (!chatId) {
-    return (
-      <div className="chat-empty">
-        Selecciona un chat
-      </div>
-    );
+    return <div className="chat-empty">Selecciona un chat</div>;
   }
 
   return (
