@@ -22,7 +22,7 @@ export default function Home() {
             right: 0,
             width: "25vw",
             border: "2px solid #00ff00",
-            borderRadius: "16px 0 0 16px",
+            borderRadius: "16px",
             background: "#000000",
             boxShadow: "-8px 0 24px rgba(0, 0, 0, 0.18)",
             zIndex: 1000,
