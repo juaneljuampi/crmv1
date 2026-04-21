@@ -17,10 +17,10 @@ export default function Home() {
         <div
           style={{
             position: "fixed",
-            top: 0,
+            top: "1cm",
             right: 0,
-            width: "50vw",
-            height: "100vh",
+            width: "25vw",
+            height: "calc(100vh - 2cm)",
             background: "#fff",
             boxShadow: "-8px 0 24px rgba(0, 0, 0, 0.18)",
             zIndex: 1000,
@@ -35,7 +35,9 @@ export default function Home() {
               margin: "10px",
               border: "none",
               background: "transparent",
+              color: "#d00000",
               fontSize: "24px",
+              fontWeight: 700,
               cursor: "pointer",
             }}
             aria-label="Cerrar chat"
