@@ -18,7 +18,7 @@ export default function Home() {
           style={{
             position: "fixed",
             top: "0cm",
-            bottom: "1.5cm",
+            bottom: "3cm",
             right: 0,
             width: "25vw",
             background: "#000000",
