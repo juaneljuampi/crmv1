@@ -9,19 +9,55 @@ export default function Home() {
 
   return (
     <div className="app">
-      
       {/* SIDEBAR */}
       <Sidebar onSelectChat={setSelectedChat} />
 
-      {/* CHAT AREA */}
-      <div className="chat-container">
-        <ChatWindow chatId={selectedChat} refresh={refresh} />
+      {/* CHAT MODAL (MITAD DERECHA) */}
+      {selectedChat !== null && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            right: 0,
+            width: "50vw",
+            height: "100vh",
+            background: "#fff",
+            boxShadow: "-8px 0 24px rgba(0, 0, 0, 0.18)",
+            zIndex: 1000,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <button
+            onClick={() => setSelectedChat(null)}
+            style={{
+              alignSelf: "flex-end",
+              margin: "10px",
+              border: "none",
+              background: "transparent",
+              fontSize: "24px",
+              cursor: "pointer",
+            }}
+            aria-label="Cerrar chat"
+          >
+            ×
+          </button>
 
-        <MessageInput
-          chatId={selectedChat}
-          onMessageSent={() => setRefresh(prev => prev + 1)}
-        />
-      </div>
+          <div
+            className="chat-container"
+            style={{ display: "flex", flexDirection: "column", height: "100%" }}
+          >
+            <div style={{ flex: 1, minHeight: 0 }}>
+              <ChatWindow chatId={selectedChat} refresh={refresh} />
+            </div>
+
+            <MessageInput
+              chatId={selectedChat}
+              onMessageSent={() => setRefresh(prev => prev + 1)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
