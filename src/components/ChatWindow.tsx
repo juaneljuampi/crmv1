@@ -60,7 +60,7 @@ export default function ChatWindow({ chatId, refresh }: Props) {
         <div className="chat-user">
           <div className="avatar">👤</div>
           <div>
-            <div className="name">Cliente #{chatId}</div>
+            <div className="name">usuario #{chatId}</div>
             <div className="status">En línea</div>
           </div>
         </div>
