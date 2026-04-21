@@ -17,11 +17,11 @@ export default function Home() {
         <div
           style={{
             position: "fixed",
-            top: "1cm",
+            top: "0.5cm",
+            bottom: "0.5cm",
             right: 0,
             width: "25vw",
-            height: "calc(100vh - 2cm)",
-            background: "#fff",
+            background: "#000000",
             boxShadow: "-8px 0 24px rgba(0, 0, 0, 0.18)",
             zIndex: 1000,
             display: "flex",
@@ -35,7 +35,7 @@ export default function Home() {
               margin: "10px",
               border: "none",
               background: "transparent",
-              color: "#d00000",
+              color: "#fcfcfc",
               fontSize: "24px",
               fontWeight: 700,
               cursor: "pointer",
