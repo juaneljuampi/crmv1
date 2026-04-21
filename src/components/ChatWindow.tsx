@@ -32,14 +32,16 @@ export default function ChatWindow({ chatId, refresh }: Props) {
   }, [chatId, refresh]);
 
   useEffect(() => {
-    socket.on("newMessage", (msg) => {
+    const handleNewMessage = (msg: any) => {
       if (msg.conversationId === chatId) {
         setMessages(prev => [...prev, msg]);
       }
-    });
+    };
+
+    socket.on("newMessage", handleNewMessage);
 
     return () => {
-      socket.off("newMessage");
+      socket.off("newMessage", handleNewMessage);
     };
   }, [chatId]);
 
@@ -52,46 +54,24 @@ export default function ChatWindow({ chatId, refresh }: Props) {
   }
 
   return (
-    <div className="chat-container">
+    <div className="chat-window">
+      {messages.map((msg, index) => {
+        const text = msg.text || msg.body || "";
+        const isMe = msg.sender === "me";
 
-      {/* HEADER */}
-      <div className="chat-header-pro">
-        <div className="chat-user">
-          <div className="avatar">👤</div>
-          <div>
-            <div className="name">Cliente #{chatId}</div>
-            <div className="status">En línea</div>
-          </div>
-        </div>
-      </div>
-
-      {/* MENSAJES */}
-      <div className="chat-body">
-        {messages.map((msg, i) => {
-          const text = msg.text || msg.body || "";
-          const isMe = msg.sender === "me";
-
-          return (
-            <div
-              key={msg.id || i}
-              className={`message-row ${isMe ? "me" : "other"}`}
-            >
-              <div className={`bubble ${isMe ? "me" : "other"}`}>
-                {text}
-                <div className="time">
-                  {msg.timestamp
-                    ? new Date(msg.timestamp).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                    : ""}
-                </div>
-              </div>
+        return (
+          <div
+            key={msg.id || index}
+            className={`message-row ${isMe ? "me" : "other"}`}
+          >
+            <div className={`message-bubble ${isMe ? "me" : "other"}`}>
+              {text}
             </div>
-          );
-        })}
-        <div ref={bottomRef} />
-      </div>
+          </div>
+        );
+      })}
+
+      <div ref={bottomRef} />
     </div>
   );
 }
