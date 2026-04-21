@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import socket from "../socket";
+import "../styles/chat.css";
 
 type Props = {
   chatId: number | null;
@@ -32,16 +33,14 @@ export default function ChatWindow({ chatId, refresh }: Props) {
   }, [chatId, refresh]);
 
   useEffect(() => {
-    const handleNewMessage = (msg: any) => {
+    socket.on("newMessage", (msg) => {
       if (msg.conversationId === chatId) {
         setMessages(prev => [...prev, msg]);
       }
-    };
-
-    socket.on("newMessage", handleNewMessage);
+    });
 
     return () => {
-      socket.off("newMessage", handleNewMessage);
+      socket.off("newMessage");
     };
   }, [chatId]);
 
@@ -54,24 +53,46 @@ export default function ChatWindow({ chatId, refresh }: Props) {
   }
 
   return (
-    <div className="chat-window">
-      {messages.map((msg, index) => {
-        const text = msg.text || msg.body || "";
-        const isMe = msg.sender === "me";
+    <div className="chat-container">
 
-        return (
-          <div
-            key={msg.id || index}
-            className={`message-row ${isMe ? "me" : "other"}`}
-          >
-            <div className={`message-bubble ${isMe ? "me" : "other"}`}>
-              {text}
-            </div>
+      {/* HEADER */}
+      <div className="chat-header-pro">
+        <div className="chat-user">
+          <div className="avatar">👤</div>
+          <div>
+            <div className="name">Cliente #{chatId}</div>
+            <div className="status">En línea</div>
           </div>
-        );
-      })}
+        </div>
+      </div>
 
-      <div ref={bottomRef} />
+      {/* MENSAJES */}
+      <div className="chat-body">
+        {messages.map((msg, i) => {
+          const text = msg.text || msg.body || "";
+          const isMe = msg.sender === "me";
+
+          return (
+            <div
+              key={msg.id || i}
+              className={`message-row ${isMe ? "me" : "other"}`}
+            >
+              <div className={`bubble ${isMe ? "me" : "other"}`}>
+                {text}
+                <div className="time">
+                  {msg.timestamp
+                    ? new Date(msg.timestamp).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : ""}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+        <div ref={bottomRef} />
+      </div>
     </div>
   );
 }

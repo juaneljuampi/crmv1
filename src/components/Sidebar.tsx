@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "../styles/chat.css";
 
 type Conversation = {
   id: number;
