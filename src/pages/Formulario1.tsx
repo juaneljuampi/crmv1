@@ -11,8 +11,6 @@ export default function Formulario1() {
     { nombre: "", numero: "" }
   ]);
 
-  const [mensaje, setMensaje] = useState("");
-
   // Cambiar datos
   const handleChange = (index: number, campo: keyof Contacto, valor: string) => {
     const nuevos = [...contactos];
