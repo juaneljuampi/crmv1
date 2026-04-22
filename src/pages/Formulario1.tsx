@@ -12,6 +12,8 @@ export default function Formulario1() {
     { nombre: "", numero: "" }
   ]);
 
+  const [loading, setLoading] = useState(false);
+
   // Cambiar datos
   const handleChange = (
     index: number,
@@ -37,8 +39,10 @@ export default function Formulario1() {
     setContactos(nuevos);
   };
 
-  // Guardar todo con ID cliente
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  // Guardar
+  const handleSubmit = async (
+    e: FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
     const data = {
@@ -46,28 +50,64 @@ export default function Formulario1() {
       contactos
     };
 
-    console.log(data);
+    try {
+      setLoading(true);
 
-    alert("Cliente y contactos guardados");
+      const response = await fetch(
+        "https://backend-api-whatsapp-crm.onrender.com/api/clientes",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("✅ Guardado correctamente");
+
+        setClienteId("");
+        setContactos([
+          { nombre: "", numero: "" }
+        ]);
+      } else {
+        alert("❌ " + result.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("❌ Error de conexión");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div style={{ padding: "30px" }}>
+    <div
+      style={{
+        padding: "30px",
+        maxWidth: "700px",
+        margin: "auto"
+      }}
+    >
       <h1>Registro de Contactos</h1>
 
       <form onSubmit={handleSubmit}>
-        {/* ID Cliente */}
+        {/* Número cliente */}
         <div style={{ marginBottom: "20px" }}>
           <input
             type="text"
-            placeholder="ID Cliente"
+            placeholder="Número Cliente"
             value={clienteId}
+            required
             onChange={(e) =>
               setClienteId(e.target.value)
             }
             style={{
               padding: "10px",
-              width: "250px"
+              width: "100%"
             }}
           />
         </div>
@@ -86,6 +126,7 @@ export default function Formulario1() {
             <input
               type="text"
               placeholder="Nombre"
+              required
               value={item.nombre}
               onChange={(e) =>
                 handleChange(
@@ -99,6 +140,7 @@ export default function Formulario1() {
             <input
               type="text"
               placeholder="Número"
+              required
               value={item.numero}
               onChange={(e) =>
                 handleChange(
@@ -107,7 +149,9 @@ export default function Formulario1() {
                   e.target.value
                 )
               }
-              style={{ marginLeft: "10px" }}
+              style={{
+                marginLeft: "10px"
+              }}
             />
 
             <button
@@ -115,7 +159,9 @@ export default function Formulario1() {
               onClick={() =>
                 eliminarContacto(index)
               }
-              style={{ marginLeft: "10px" }}
+              style={{
+                marginLeft: "10px"
+              }}
             >
               Eliminar
             </button>
@@ -132,9 +178,14 @@ export default function Formulario1() {
 
         <button
           type="submit"
-          style={{ marginLeft: "10px" }}
+          disabled={loading}
+          style={{
+            marginLeft: "10px"
+          }}
         >
-          Guardar
+          {loading
+            ? "Guardando..."
+            : "Guardar"}
         </button>
       </form>
     </div>
