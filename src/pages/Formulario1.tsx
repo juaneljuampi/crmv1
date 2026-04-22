@@ -99,7 +99,7 @@ export default function Formulario1() {
         <div style={{ marginBottom: "20px" }}>
           <input
             type="text"
-            placeholder="Número Cliente 569..."
+            placeholder="Número Cliente"
             value={clienteId}
             required
             onChange={(e) =>
