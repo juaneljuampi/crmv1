@@ -6,32 +6,6 @@ type Contacto = {
   numero: string;
 };
 
-const PREFIJO_TELEFONO = "569";
-
-const normalizarTelefono = (valor: string) => {
-  const soloDigitos = valor.replace(/\D/g, "");
-
-  if (!soloDigitos) {
-    return "";
-  }
-
-  if (soloDigitos.startsWith(PREFIJO_TELEFONO)) {
-    return soloDigitos;
-  }
-
-  return `${PREFIJO_TELEFONO}${soloDigitos}`;
-};
-
-const obtenerTelefonoSinPrefijo = (numero: string) => {
-  if (!numero || numero === PREFIJO_TELEFONO) {
-    return "";
-  }
-
-  return numero.startsWith(PREFIJO_TELEFONO)
-    ? numero.slice(PREFIJO_TELEFONO.length)
-    : numero;
-};
-
 export default function Formulario1() {
   const [clienteId, setClienteId] = useState("");
   const [contactos, setContactos] = useState<Contacto[]>([
@@ -47,8 +21,7 @@ export default function Formulario1() {
     valor: string
   ) => {
     const nuevos = [...contactos];
-    nuevos[index][campo] =
-      campo === "numero" ? normalizarTelefono(valor) : valor;
+    nuevos[index][campo] = valor;
     setContactos(nuevos);
   };
 
@@ -166,10 +139,9 @@ export default function Formulario1() {
 
             <input
               type="text"
-              placeholder="Número de teléfono"
+              placeholder="Número"
               required
-              value={obtenerTelefonoSinPrefijo(item.numero)}
-              inputMode="numeric"
+              value={item.numero}
               onChange={(e) =>
                 handleChange(
                   index,
@@ -181,8 +153,6 @@ export default function Formulario1() {
                 marginLeft: "10px"
               }}
             />
-
-            <span style={{ marginLeft: "10px" }}>+569</span>
 
             <button
               type="button"
