@@ -1,4 +1,4 @@
-// src/pages/Formulario1.jsx
+// src/pages/Formulario1.tsx
 import { useState, type FormEvent } from "react";
 
 type Contacto = {
@@ -7,12 +7,17 @@ type Contacto = {
 };
 
 export default function Formulario1() {
+  const [clienteId, setClienteId] = useState("");
   const [contactos, setContactos] = useState<Contacto[]>([
     { nombre: "", numero: "" }
   ]);
 
   // Cambiar datos
-  const handleChange = (index: number, campo: keyof Contacto, valor: string) => {
+  const handleChange = (
+    index: number,
+    campo: keyof Contacto,
+    valor: string
+  ) => {
     const nuevos = [...contactos];
     nuevos[index][campo] = valor;
     setContactos(nuevos);
@@ -20,7 +25,10 @@ export default function Formulario1() {
 
   // Agregar fila
   const agregarContacto = () => {
-    setContactos([...contactos, { nombre: "", numero: "" }]);
+    setContactos([
+      ...contactos,
+      { nombre: "", numero: "" }
+    ]);
   };
 
   // Eliminar fila
@@ -29,31 +37,42 @@ export default function Formulario1() {
     setContactos(nuevos);
   };
 
-  // Guardar
+  // Guardar todo con ID cliente
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(contactos);
-    alert("Contactos guardados");
-  };
 
-  // Enviar otro formulario por WhatsApp
-  const enviarFormulario = (numero: string) => {
-    const linkFormulario =
-      "https://tuusuario.github.io/tuproyecto/formulario2";
+    const data = {
+      clienteId,
+      contactos
+    };
 
-    const texto = `Hola, te envío este formulario: ${linkFormulario}`;
+    console.log(data);
 
-    window.open(
-      `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`,
-      "_blank"
-    );
+    alert("Cliente y contactos guardados");
   };
 
   return (
     <div style={{ padding: "30px" }}>
-      <h1>Formulario de Contactos</h1>
+      <h1>Registro de Contactos</h1>
 
       <form onSubmit={handleSubmit}>
+        {/* ID Cliente */}
+        <div style={{ marginBottom: "20px" }}>
+          <input
+            type="text"
+            placeholder="ID Cliente"
+            value={clienteId}
+            onChange={(e) =>
+              setClienteId(e.target.value)
+            }
+            style={{
+              padding: "10px",
+              width: "250px"
+            }}
+          />
+        </div>
+
+        {/* Contactos */}
         {contactos.map((item, index) => (
           <div
             key={index}
@@ -69,7 +88,11 @@ export default function Formulario1() {
               placeholder="Nombre"
               value={item.nombre}
               onChange={(e) =>
-                handleChange(index, "nombre", e.target.value)
+                handleChange(
+                  index,
+                  "nombre",
+                  e.target.value
+                )
               }
             />
 
@@ -78,30 +101,32 @@ export default function Formulario1() {
               placeholder="Número"
               value={item.numero}
               onChange={(e) =>
-                handleChange(index, "numero", e.target.value)
+                handleChange(
+                  index,
+                  "numero",
+                  e.target.value
+                )
               }
               style={{ marginLeft: "10px" }}
             />
 
             <button
               type="button"
-              onClick={() => eliminarContacto(index)}
+              onClick={() =>
+                eliminarContacto(index)
+              }
               style={{ marginLeft: "10px" }}
             >
               Eliminar
             </button>
-
-            <button
-              type="button"
-              onClick={() => enviarFormulario(item.numero)}
-              style={{ marginLeft: "10px" }}
-            >
-              Enviar Formulario
-            </button>
           </div>
         ))}
 
-        <button type="button" onClick={agregarContacto}>
+        {/* Botones */}
+        <button
+          type="button"
+          onClick={agregarContacto}
+        >
           + Agregar Otro
         </button>
 
