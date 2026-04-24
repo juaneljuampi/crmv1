@@ -124,28 +124,47 @@ export default function Home() {
    * ENVIAR FORMULARIO
    * ===================================
    */
-  const enviarFormulario = () => {
+const enviarFormulario = async () => {
+  if (seleccionados.length === 0) {
+    alert("Selecciona al menos un contacto");
+    return;
+  }
+
+  try {
     const link =
       "https://juaneljuampi.github.io/crmv1/formulario1";
 
-    contactos.forEach((item) => {
+    for (const item of contactos) {
       if (
         seleccionados.includes(
           item.id_contacto
         )
       ) {
-        const texto =
-          `Hola ${item.nombre}, completa este formulario: ${link}`;
-
-        window.open(
-          `https://wa.me/${item.numero}?text=${encodeURIComponent(
-            texto
-          )}`,
-          "_blank"
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/api/send-message`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              conversationId:
+                item.numero,
+              mode: "text",
+              message: `Hola ${item.nombre}, completa este formulario: ${link}`
+            })
+          }
         );
       }
-    });
-  };
+    }
+
+    alert("Formulario enviado");
+  } catch (error) {
+    console.log(error);
+    alert("Error al enviar");
+  }
+};
 
   return (
     <div className="app">
