@@ -124,8 +124,13 @@ export default function Home() {
    * ENVIAR FORMULARIO
    * ===================================
    */
+// REEMPLAZA SOLO TU FUNCIÓN enviarFormulario EN Home.tsx POR ESTA
+
 const enviarFormulario = async () => {
-  if (seleccionados.length === 0) return;
+  if (seleccionados.length === 0) {
+    alert("Selecciona al menos un contacto");
+    return;
+  }
 
   try {
     for (const item of contactos) {
@@ -140,13 +145,13 @@ const enviarFormulario = async () => {
             method: "POST",
             headers: {
               "Content-Type":
-                "application/json",
+                "application/json"
             },
             body: JSON.stringify({
               conversationId:
-                item.numero,
-              mode: "cta",
-            }),
+                Number(item.id_contacto),
+              mode: "cta"
+            })
           }
         );
       }
