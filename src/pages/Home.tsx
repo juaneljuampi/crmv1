@@ -152,7 +152,7 @@ export default function Home() {
       {/* SIDEBAR */}
       <Sidebar onSelectChat={setSelectedChat} />
 
-{/* NUEVO PANEL CLIENTE */}
+      {/* NUEVO PANEL CLIENTE */}
 <div
   style={{
     position: "fixed",
