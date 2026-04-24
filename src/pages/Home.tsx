@@ -152,118 +152,153 @@ export default function Home() {
       {/* SIDEBAR */}
       <Sidebar onSelectChat={setSelectedChat} />
 
-      {/* NUEVO PANEL CLIENTE */}
-      <div
-        style={{
-          position: "fixed",
-          left: "260px",
-          top: 0,
-          bottom: 0,
-          width: "300px",
-          background: "#111",
-          color: "white",
-          padding: "15px",
-          overflowY: "auto",
-          borderRight: "1px solid #333"
-        }}
-      >
-        <h3>Buscar Cliente</h3>
+{/* NUEVO PANEL CLIENTE */}
+<div
+  style={{
+    position: "fixed",
+    left: "260px",
+    top: 0,
+    bottom: 0,
+    width: "300px",
+    background: "#111",
+    color: "white",
+    padding: "15px",
+    overflowY: "auto",
+    borderRight: "1px solid #333"
+  }}
+>
+  <h3>Buscar Cliente</h3>
 
-        <input
-          value={clienteId}
-          onChange={(e) =>
-            setClienteId(e.target.value)
-          }
-          placeholder="Número Cliente"
-          style={{
-            width: "100%",
-            padding: "10px"
-          }}
-        />
+  <input
+    value={clienteId}
+    onChange={(e) =>
+      setClienteId(e.target.value)
+    }
+    placeholder="Número Cliente"
+    style={{
+      width: "100%",
+      padding: "10px"
+    }}
+  />
 
-        <button
-          onClick={buscarCliente}
-          style={{
-            marginTop: "10px",
-            width: "100%",
-            padding: "10px"
-          }}
-        >
-          {loading
-            ? "Buscando..."
-            : "Buscar"}
-        </button>
+  <button
+    onClick={buscarCliente}
+    style={{
+      marginTop: "10px",
+      width: "100%",
+      padding: "10px"
+    }}
+  >
+    {loading
+      ? "Buscando..."
+      : "Buscar"}
+  </button>
 
-        <hr />
+  <hr />
 
-        {contactos.map((item) => (
-          <label
-            key={item.id_contacto}
-            style={{
-              display: "block",
-              marginBottom: "10px",
-              cursor: "pointer"
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={seleccionados.includes(
-                item.id_contacto
-              )}
-              onChange={() =>
-                toggleSeleccion(
+  {contactos.map((item) => (
+    <label
+      key={item.id_contacto}
+      style={{
+        display: "block",
+        marginBottom: "10px",
+        cursor: "pointer"
+      }}
+    >
+      <input
+        type="checkbox"
+        checked={seleccionados.includes(
+          item.id_contacto
+        )}
+        onChange={() =>
+          toggleSeleccion(
+            item.id_contacto
+          )
+        }
+      />{" "}
+      {item.nombre}
+      <br />
+      <small>{item.numero}</small>
+    </label>
+  ))}
+
+  {contactos.length > 0 && (
+    <>
+      <button
+        onClick={async () => {
+          try {
+            for (const item of contactos) {
+              if (
+                seleccionados.includes(
                   item.id_contacto
                 )
+              ) {
+                await fetch(
+                  `${import.meta.env.VITE_API_URL}/api/send-message`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type":
+                        "application/json"
+                    },
+                    body: JSON.stringify({
+                      conversationId:
+                        item.numero,
+                      mode: "cta"
+                    })
+                  }
+                );
               }
-            />{" "}
-            {item.nombre}
-            <br />
-            <small>{item.numero}</small>
-          </label>
-        ))}
+            }
 
-        {contactos.length > 0 && (
-          <>
-            <button
-              onClick={enviarFormulario}
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginTop: "10px",
-                background: "green",
-                color: "white"
-              }}
-            >
-              Enviar Formulario
-            </button>
+            alert(
+              "Formulario enviado"
+            );
+          } catch (error) {
+            console.log(error);
+            alert(
+              "Error al enviar"
+            );
+          }
+        }}
+        style={{
+          width: "100%",
+          padding: "10px",
+          marginTop: "10px",
+          background: "green",
+          color: "white"
+        }}
+      >
+        Enviar Formulario
+      </button>
 
-            <button
-              onClick={eliminarContacto}
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginTop: "10px",
-                background: "orange"
-              }}
-            >
-              Eliminar Seleccionado
-            </button>
+      <button
+        onClick={eliminarContacto}
+        style={{
+          width: "100%",
+          padding: "10px",
+          marginTop: "10px",
+          background: "orange"
+        }}
+      >
+        Eliminar Seleccionado
+      </button>
 
-            <button
-              onClick={eliminarCliente}
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginTop: "10px",
-                background: "red",
-                color: "white"
-              }}
-            >
-              Eliminar Cliente
-            </button>
-          </>
-        )}
-      </div>
+      <button
+        onClick={eliminarCliente}
+        style={{
+          width: "100%",
+          padding: "10px",
+          marginTop: "10px",
+          background: "red",
+          color: "white"
+        }}
+      >
+        Eliminar Cliente
+      </button>
+    </>
+  )}
+</div>
 
       {/* CHAT MODAL (NO TOCADO) */}
       {selectedChat !== null && (
