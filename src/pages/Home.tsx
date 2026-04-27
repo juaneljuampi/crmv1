@@ -10,9 +10,6 @@ type Contacto = {
 };
 
 export default function Home() {
-  const VITE_API_URL =
-    import.meta.env.VITE_API_URL as string;
-
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
   const [refresh, setRefresh] = useState(0);
 
@@ -127,11 +124,8 @@ export default function Home() {
    * ENVIAR FORMULARIO
    * ===================================
    */
-  const enviarFormulario = async () => {
-  if (seleccionados.length === 0) {
-    alert("Selecciona al menos un contacto");
-    return;
-  }
+const enviarFormulario = async () => {
+  if (seleccionados.length === 0) return;
 
   try {
     for (const item of contactos) {
@@ -140,25 +134,26 @@ export default function Home() {
           item.id_contacto
         )
       ) {
-       await fetch(`${VITE_API_URL}/api/send-message`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    to: item.numero,
-    mode: "cta"
-  })
-});
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/api/send-message`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              to: item.numero,
+              mode: "cta"
+            })
+          }
+        );
       }
     }
 
-    alert(
-      "Formulario enviado a seleccionados"
-    );
+    alert("Enviado");
   } catch (error) {
     console.log(error);
-    alert("Error al enviar");
   }
 };
 
