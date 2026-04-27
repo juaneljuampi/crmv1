@@ -71,23 +71,38 @@ export default function Home() {
    * ===================================
    */
   const eliminarContacto = async () => {
-    if (seleccionados.length === 0) return;
+  if (seleccionados.length === 0) {
+    alert("Selecciona contactos");
+    return;
+  }
 
-    try {
-      for (const id of seleccionados) {
-        await fetch(
-          `https://backend-api-whatsapp-crm.onrender.com/api/clientes/contacto/${id}`,
-          {
-            method: "DELETE"
-          }
-        );
-      }
+  const confirmar = confirm(
+    `¿Eliminar ${seleccionados.length} contacto(s)?`
+  );
 
-      buscarCliente();
-    } catch (error) {
-      console.log(error);
+  if (!confirmar) return;
+
+  try {
+    for (const id of seleccionados) {
+      await fetch(
+        `${import.meta.env.VITE_API_URL}/api/clientes/contacto/${id}`,
+        {
+          method: "DELETE"
+        }
+      );
     }
-  };
+
+    setSeleccionados([]);
+
+    await buscarCliente();
+
+    alert("Contacto(s) eliminado(s)");
+
+  } catch (error) {
+    console.log(error);
+    alert("Error al eliminar");
+  }
+};
 
   /**
    * ===================================
