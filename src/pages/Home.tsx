@@ -159,16 +159,21 @@ const enviarFormulario = async () => {
             },
             body: JSON.stringify({
               to: item.numero,
-              mode: "cta"
+              mode: "template"
             })
           }
         );
       }
     }
 
-    alert("Enviado");
+    alert(
+      "Formulario enviado"
+    );
   } catch (error) {
     console.log(error);
+    alert(
+      "Error al enviar"
+    );
   }
 };
 
