@@ -8,11 +8,13 @@ import {
   sendTemplate,
 } from "../services/clientes";
 
+const API = import.meta.env.VITE_API_URL;
+
 type Contacto = {
   id_contacto: number;
   nombre: string;
   numero: string;
-  categoria?: string; // 👈 importante si lo agregas en backend
+  categoria?: string;
 };
 
 export default function ClientPanel() {
@@ -38,9 +40,42 @@ export default function ClientPanel() {
     if (data.ok) {
       setContactos(data.contactos);
       setSeleccionados([]);
+      setCategoria(""); // 🔥 reset filtro
     }
 
     setLoading(false);
+  };
+
+  /**
+   * ===============================
+   * 🔥 BUSCAR POR CATEGORIA (FIX)
+   * ===============================
+   */
+  const buscarPorCategoria = async (cat: string) => {
+    if (!cat) {
+      setContactos([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(
+        `${API}/api/clientes/categoria/${cat}`
+      );
+
+      const data = await res.json();
+
+      if (data.ok) {
+        setContactos(data.contactos); // 🔥 CLAVE
+        setSeleccionados([]);
+        setClienteId(""); // opcional
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   /**
@@ -99,19 +134,13 @@ export default function ClientPanel() {
 
   /**
    * ===============================
-   * FILTROS
+   * FILTRO TEXTO
    * ===============================
    */
-  const contactosFiltrados = contactos.filter((c) => {
-    const matchBusqueda =
-      c.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-      c.numero.includes(busqueda);
-
-    const matchCategoria =
-      !categoria || c.categoria === categoria;
-
-    return matchBusqueda && matchCategoria;
-  });
+  const contactosFiltrados = contactos.filter((c) =>
+    c.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+    c.numero.includes(busqueda)
+  );
 
   return (
     <div className="client-panel">
@@ -143,9 +172,12 @@ export default function ClientPanel() {
       <select
         className="panel-input"
         value={categoria}
-        onChange={(e) => setCategoria(e.target.value)}
+        onChange={(e) => {
+          setCategoria(e.target.value);
+          buscarPorCategoria(e.target.value); // 🔥 CLAVE
+        }}
       >
-        <option value="">Todas las categorías</option>
+        <option value="">Seleccionar categoría</option>
         <option value="ventas">Ventas</option>
         <option value="socios">Socios</option>
         <option value="vip">VIP</option>
