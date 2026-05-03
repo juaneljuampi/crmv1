@@ -1,0 +1,56 @@
+.client-panel {
+  position: fixed;
+  left: 260px;
+  top: 0;
+  bottom: 0;
+  width: 320px;
+  background: #111;
+  color: white;
+  padding: 16px;
+  overflow-y: auto;
+  border-right: 1px solid #2c2c2c;
+}
+
+.panel-title {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.panel-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.panel-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.btn-green {
+  background: #1e9e45;
+  color: white;
+}
+
+.btn-orange {
+  background: orange;
+}
+
+.btn-red {
+  background: #d32f2f;
+  color: white;
+}
+
+.contact-card {
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}

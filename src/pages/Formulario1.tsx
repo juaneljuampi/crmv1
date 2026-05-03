@@ -8,6 +8,7 @@ type Contacto = {
 
 export default function Formulario1() {
   const [clienteId, setClienteId] = useState("");
+  const [categoria, setCategoria] = useState(""); // 👈 NUEVO
   const [contactos, setContactos] = useState<Contacto[]>([
     { nombre: "", numero: "" }
   ]);
@@ -47,6 +48,7 @@ export default function Formulario1() {
 
     const data = {
       clienteId,
+      categoria, // 👈 NUEVO
       contactos
     };
 
@@ -70,6 +72,7 @@ export default function Formulario1() {
         alert("✅ Guardado correctamente");
 
         setClienteId("");
+        setCategoria(""); // 👈 limpiar
         setContactos([
           { nombre: "", numero: "" }
         ]);
@@ -110,6 +113,37 @@ export default function Formulario1() {
               width: "100%"
             }}
           />
+        </div>
+
+        {/* CATEGORIA 👇 */}
+        <div style={{ marginBottom: "20px" }}>
+          <select
+            value={categoria}
+            required
+            onChange={(e) =>
+              setCategoria(e.target.value)
+            }
+            style={{
+              padding: "10px",
+              width: "100%"
+            }}
+          >
+            <option value="">
+              Selecciona categoría
+            </option>
+            <option value="ventas">
+              Ventas
+            </option>
+            <option value="socios">
+              Socios
+            </option>
+            <option value="vip">
+              VIP
+            </option>
+            <option value="cobranza">
+              Cobranza
+            </option>
+          </select>
         </div>
 
         {/* Contactos */}
