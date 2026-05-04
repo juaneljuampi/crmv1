@@ -1,224 +1,227 @@
-import { useState } from "react";
-import "../styles/home.css";
-
-import {
-  getCliente,
-  deleteCliente,
-  deleteContacto,
-  sendTemplate,
-} from "../services/clientes";
-
-const API = import.meta.env.VITE_API_URL;
+// src/pages/Formulario1.tsx
+import { useState, type FormEvent } from "react";
 
 type Contacto = {
-  id_contacto: number;
   nombre: string;
   numero: string;
-  categoria?: string;
 };
 
-export default function ClientPanel() {
+export default function Formulario1() {
   const [clienteId, setClienteId] = useState("");
-  const [contactos, setContactos] = useState<Contacto[]>([]);
-  const [seleccionados, setSeleccionados] = useState<number[]>([]);
+  const [categoria, setCategoria] = useState(""); // 👈 NUEVO
+  const [contactos, setContactos] = useState<Contacto[]>([
+    { nombre: "", numero: "" }
+  ]);
+
   const [loading, setLoading] = useState(false);
 
-  const [busqueda, setBusqueda] = useState("");
-  const [categoria, setCategoria] = useState("");
-
-  /**
-   * ===============================
-   * BUSCAR CLIENTE
-   * ===============================
-   */
-  const handleSearchClient = async () => {
-    if (!clienteId) return;
-
-    setLoading(true);
-    const data = await getCliente(clienteId);
-
-    if (data.ok) {
-      setContactos(data.contactos);
-      setSeleccionados([]);
-      setCategoria(""); // 🔥 reset filtro
-    }
-
-    setLoading(false);
+  // Cambiar datos
+  const handleChange = (
+    index: number,
+    campo: keyof Contacto,
+    valor: string
+  ) => {
+    const nuevos = [...contactos];
+    nuevos[index][campo] = valor;
+    setContactos(nuevos);
   };
 
-  /**
-   * ===============================
-   * 🔥 BUSCAR POR CATEGORIA (FIX)
-   * ===============================
-   */
-  const buscarPorCategoria = async (cat: string) => {
-    if (!cat) {
-      setContactos([]);
-      return;
-    }
+  // Agregar fila
+  const agregarContacto = () => {
+    setContactos([
+      ...contactos,
+      { nombre: "", numero: "" }
+    ]);
+  };
+
+  // Eliminar fila
+  const eliminarContacto = (index: number) => {
+    const nuevos = contactos.filter((_, i) => i !== index);
+    setContactos(nuevos);
+  };
+
+  // Guardar
+  const handleSubmit = async (
+    e: FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    const data = {
+      clienteId,
+      categoria, // 👈 NUEVO
+      contactos
+    };
 
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${API}/api/clientes/categoria/${cat}`
+      const response = await fetch(
+        "https://backend-api-whatsapp-crm.onrender.com/api/clientes",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
       );
 
-      const data = await res.json();
+      const result = await response.json();
 
-      if (data.ok) {
-        setContactos(data.contactos); // 🔥 CLAVE
-        setSeleccionados([]);
-        setClienteId(""); // opcional
+      if (response.ok) {
+        alert("✅ Guardado correctamente");
+
+        setClienteId("");
+        setCategoria(""); // 👈 limpiar
+        setContactos([
+          { nombre: "", numero: "" }
+        ]);
+      } else {
+        alert("❌ " + result.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      alert("❌ Error de conexión");
     } finally {
       setLoading(false);
     }
   };
 
-  /**
-   * ===============================
-   * CHECKBOX
-   * ===============================
-   */
-  const toggleSeleccion = (id: number) => {
-    setSeleccionados((prev) =>
-      prev.includes(id)
-        ? prev.filter((x) => x !== id)
-        : [...prev, id]
-    );
-  };
-
-  /**
-   * ===============================
-   * ELIMINAR CONTACTOS
-   * ===============================
-   */
-  const handleDeleteContact = async () => {
-    await Promise.all(
-      seleccionados.map(deleteContacto)
-    );
-    setSeleccionados([]);
-    handleSearchClient();
-  };
-
-  /**
-   * ===============================
-   * ELIMINAR CLIENTE
-   * ===============================
-   */
-  const handleDeleteClient = async () => {
-    await deleteCliente(clienteId);
-    setContactos([]);
-    setClienteId("");
-  };
-
-  /**
-   * ===============================
-   * ENVIAR TEMPLATE
-   * ===============================
-   */
-  const handleSendTemplate = async () => {
-    const seleccionadosData = contactos.filter((c) =>
-      seleccionados.includes(c.id_contacto)
-    );
-
-    for (const item of seleccionadosData) {
-      await sendTemplate(item.numero);
-    }
-
-    alert("Formulario enviado");
-  };
-
-  /**
-   * ===============================
-   * FILTRO TEXTO
-   * ===============================
-   */
-  const contactosFiltrados = contactos.filter((c) =>
-    c.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-    c.numero.includes(busqueda)
-  );
-
   return (
-    <div className="client-panel">
-      <h3 className="panel-title">Clientes</h3>
+    <div
+      style={{
+        padding: "30px",
+        maxWidth: "700px",
+        margin: "auto"
+      }}
+    >
+      <h1>Registro de Contactos</h1>
 
-      {/* 🔍 BUSCAR CLIENTE */}
-      <input
-        className="panel-input"
-        placeholder="Buscar por número cliente"
-        value={clienteId}
-        onChange={(e) => setClienteId(e.target.value)}
-      />
-
-      <button onClick={handleSearchClient}>
-        {loading ? "Buscando..." : "Buscar"}
-      </button>
-
-      <hr />
-
-      {/* 🔎 BUSQUEDA */}
-      <input
-        className="panel-input"
-        placeholder="Buscar por nombre o número"
-        value={busqueda}
-        onChange={(e) => setBusqueda(e.target.value)}
-      />
-
-      {/* 🏷️ CATEGORIAS */}
-      <select
-        className="panel-input"
-        value={categoria}
-        onChange={(e) => {
-          setCategoria(e.target.value);
-          buscarPorCategoria(e.target.value); // 🔥 CLAVE
-        }}
-      >
-        <option value="">Seleccionar categoría</option>
-        <option value="ventas">Ventas</option>
-        <option value="socios">Socios</option>
-        <option value="vip">VIP</option>
-        <option value="cobranza">Cobranza</option>
-      </select>
-
-      <hr />
-
-      {/* 📋 LISTA */}
-      {contactosFiltrados.map((item) => (
-        <div
-          key={item.id_contacto}
-          className="contact-card"
-          onClick={() => toggleSeleccion(item.id_contacto)}
-        >
+      <form onSubmit={handleSubmit}>
+        {/* Número cliente */}
+        <div style={{ marginBottom: "20px" }}>
           <input
-            type="checkbox"
-            checked={seleccionados.includes(item.id_contacto)}
-            readOnly
+            type="text"
+            placeholder="Número Cliente"
+            value={clienteId}
+            required
+            onChange={(e) =>
+              setClienteId(e.target.value)
+            }
+            style={{
+              padding: "10px",
+              width: "100%"
+            }}
           />
-          <div>{item.nombre}</div>
-          <small>{item.numero}</small>
         </div>
-      ))}
 
-      {/* 🔥 ACCIONES */}
-      {contactos.length > 0 && (
-        <>
-          <button className="btn-green" onClick={handleSendTemplate}>
-            Enviar Formulario
-          </button>
+        {/* CATEGORIA 👇 */}
+        <div style={{ marginBottom: "20px" }}>
+          <select
+            value={categoria}
+            required
+            onChange={(e) =>
+              setCategoria(e.target.value)
+            }
+            style={{
+              padding: "10px",
+              width: "100%"
+            }}
+          >
+            <option value="">
+              Selecciona categoría
+            </option>
+            <option value="ventas">
+              Ventas
+            </option>
+            <option value="socios">
+              Socios
+            </option>
+            <option value="vip">
+              VIP
+            </option>
+            <option value="cobranza">
+              Cobranza
+            </option>
+          </select>
+        </div>
 
-          <button className="btn-orange" onClick={handleDeleteContact}>
-            Eliminar
-          </button>
+        {/* Contactos */}
+        {contactos.map((item, index) => (
+          <div
+            key={index}
+            style={{
+              marginBottom: "15px",
+              border: "1px solid #ccc",
+              padding: "10px",
+              borderRadius: "8px"
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Nombre"
+              required
+              value={item.nombre}
+              onChange={(e) =>
+                handleChange(
+                  index,
+                  "nombre",
+                  e.target.value
+                )
+              }
+            />
 
-          <button className="btn-red" onClick={handleDeleteClient}>
-            Eliminar Cliente
-          </button>
-        </>
-      )}
+            <input
+              type="text"
+              placeholder="Número"
+              required
+              value={item.numero}
+              onChange={(e) =>
+                handleChange(
+                  index,
+                  "numero",
+                  e.target.value
+                )
+              }
+              style={{
+                marginLeft: "10px"
+              }}
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                eliminarContacto(index)
+              }
+              style={{
+                marginLeft: "10px"
+              }}
+            >
+              Eliminar
+            </button>
+          </div>
+        ))}
+
+        {/* Botones */}
+        <button
+          type="button"
+          onClick={agregarContacto}
+        >
+          + Agregar Otro
+        </button>
+
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            marginLeft: "10px"
+          }}
+        >
+          {loading
+            ? "Guardando..."
+            : "Guardar"}
+        </button>
+      </form>
     </div>
   );
 }

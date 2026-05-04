@@ -4,13 +4,14 @@ import { useState, type FormEvent } from "react";
 type Contacto = {
   nombre: string;
   numero: string;
+  categoria: string; // 🔥 AHORA POR CONTACTO
 };
 
 export default function Formulario1() {
   const [clienteId, setClienteId] = useState("");
-  const [categoria, setCategoria] = useState(""); // 👈 NUEVO
+
   const [contactos, setContactos] = useState<Contacto[]>([
-    { nombre: "", numero: "" }
+    { nombre: "", numero: "", categoria: "" }
   ]);
 
   const [loading, setLoading] = useState(false);
@@ -30,7 +31,7 @@ export default function Formulario1() {
   const agregarContacto = () => {
     setContactos([
       ...contactos,
-      { nombre: "", numero: "" }
+      { nombre: "", numero: "", categoria: "" }
     ]);
   };
 
@@ -48,8 +49,7 @@ export default function Formulario1() {
 
     const data = {
       clienteId,
-      categoria, // 👈 NUEVO
-      contactos
+      contactos // 🔥 YA INCLUYE categoria
     };
 
     try {
@@ -72,9 +72,8 @@ export default function Formulario1() {
         alert("✅ Guardado correctamente");
 
         setClienteId("");
-        setCategoria(""); // 👈 limpiar
         setContactos([
-          { nombre: "", numero: "" }
+          { nombre: "", numero: "", categoria: "" }
         ]);
       } else {
         alert("❌ " + result.message);
@@ -88,17 +87,15 @@ export default function Formulario1() {
   };
 
   return (
-    <div
-      style={{
-        padding: "30px",
-        maxWidth: "700px",
-        margin: "auto"
-      }}
-    >
+    <div style={{
+      padding: "30px",
+      maxWidth: "700px",
+      margin: "auto"
+    }}>
       <h1>Registro de Contactos</h1>
 
       <form onSubmit={handleSubmit}>
-        {/* Número cliente */}
+        {/* Cliente */}
         <div style={{ marginBottom: "20px" }}>
           <input
             type="text"
@@ -115,59 +112,21 @@ export default function Formulario1() {
           />
         </div>
 
-        {/* CATEGORIA 👇 */}
-        <div style={{ marginBottom: "20px" }}>
-          <select
-            value={categoria}
-            required
-            onChange={(e) =>
-              setCategoria(e.target.value)
-            }
-            style={{
-              padding: "10px",
-              width: "100%"
-            }}
-          >
-            <option value="">
-              Selecciona categoría
-            </option>
-            <option value="ventas">
-              Ventas
-            </option>
-            <option value="socios">
-              Socios
-            </option>
-            <option value="vip">
-              VIP
-            </option>
-            <option value="cobranza">
-              Cobranza
-            </option>
-          </select>
-        </div>
-
-        {/* Contactos */}
+        {/* CONTACTOS */}
         {contactos.map((item, index) => (
-          <div
-            key={index}
-            style={{
-              marginBottom: "15px",
-              border: "1px solid #ccc",
-              padding: "10px",
-              borderRadius: "8px"
-            }}
-          >
+          <div key={index} style={{
+            marginBottom: "15px",
+            border: "1px solid #ccc",
+            padding: "10px",
+            borderRadius: "8px"
+          }}>
             <input
               type="text"
               placeholder="Nombre"
               required
               value={item.nombre}
               onChange={(e) =>
-                handleChange(
-                  index,
-                  "nombre",
-                  e.target.value
-                )
+                handleChange(index, "nombre", e.target.value)
               }
             />
 
@@ -177,49 +136,48 @@ export default function Formulario1() {
               required
               value={item.numero}
               onChange={(e) =>
-                handleChange(
-                  index,
-                  "numero",
-                  e.target.value
-                )
+                handleChange(index, "numero", e.target.value)
               }
-              style={{
-                marginLeft: "10px"
-              }}
+              style={{ marginLeft: "10px" }}
             />
+
+            {/* 🔥 CATEGORIA POR CONTACTO */}
+            <select
+              required
+              value={item.categoria}
+              onChange={(e) =>
+                handleChange(index, "categoria", e.target.value)
+              }
+              style={{ marginLeft: "10px" }}
+            >
+              <option value="">Categoría</option>
+              <option value="ventas">Ventas</option>
+              <option value="socios">Socios</option>
+              <option value="vip">VIP</option>
+              <option value="cobranza">Cobranza</option>
+            </select>
 
             <button
               type="button"
-              onClick={() =>
-                eliminarContacto(index)
-              }
-              style={{
-                marginLeft: "10px"
-              }}
+              onClick={() => eliminarContacto(index)}
+              style={{ marginLeft: "10px" }}
             >
               Eliminar
             </button>
           </div>
         ))}
 
-        {/* Botones */}
-        <button
-          type="button"
-          onClick={agregarContacto}
-        >
+        {/* BOTONES */}
+        <button type="button" onClick={agregarContacto}>
           + Agregar Otro
         </button>
 
         <button
           type="submit"
           disabled={loading}
-          style={{
-            marginLeft: "10px"
-          }}
+          style={{ marginLeft: "10px" }}
         >
-          {loading
-            ? "Guardando..."
-            : "Guardar"}
+          {loading ? "Guardando..." : "Guardar"}
         </button>
       </form>
     </div>
