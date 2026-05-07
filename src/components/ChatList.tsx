@@ -13,12 +13,15 @@ type Props = {
 export default function ChatList({ onSelectChat }: Props) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
 
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/conversations`)
-      .then(res => res.json())
-      .then(setConversations)
-      .catch(console.error);
-  }, []);
+useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_URL}/api/conversations`)
+    .then(res => res.json())
+    .then((data) => {
+      console.log("CONVERSACIONES:", data);
+      setConversations(data.conversations || data);
+    })
+    .catch(console.error);
+}, []);
 
   return (
     <div className="chat-sidebar">
