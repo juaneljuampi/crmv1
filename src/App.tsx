@@ -1,16 +1,27 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Formulario1 from "./pages/Formulario1";
+import { useState } from "react";
+import Login from "./pages/Login";
+import Clientes from "./pages/Clientes";
+import MainLayout from "./layouts/MainLayout";
+import "./styles/dashboard.css";
 
-function App() {
+import Categorias from "./pages/Categorias";
+import Mensajes from "./pages/Mensajes";
+import Dashboard from "./pages/Dashboard";
+
+export default function App() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [page, setPage] = useState("dashboard");
+
+  if (!isAuth) {
+    return <Login onLogin={() => setIsAuth(true)} />;
+  }
+
   return (
-    <BrowserRouter basename="/crmv1">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/formulario1" element={<Formulario1 />} />
-      </Routes>
-    </BrowserRouter>
+    <MainLayout setPage={setPage}>
+      {page === "dashboard" && <Dashboard />}
+      {page === "clientes" && <Clientes />}
+      {page === "categorias" && <Categorias />}
+      {page === "mensajes" && <Mensajes />}
+    </MainLayout>
   );
 }
-
-export default App;

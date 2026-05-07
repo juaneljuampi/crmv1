@@ -53,7 +53,7 @@ export default function ChatWindow({ chatId, refresh }: Props) {
   }
 
   return (
-    <div className="chat-container">
+    <div className="chat-container whatsapp">
 
       {/* HEADER */}
       <div className="chat-header-pro">

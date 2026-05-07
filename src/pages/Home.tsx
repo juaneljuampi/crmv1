@@ -1,5 +1,5 @@
 import Sidebar from "../components/Sidebar";
-import ClientPanel from "../components/ClientePanel";
+import ClientPanel from "../components/ClientPanel";
 import ChatModal from "../components/ChatModal";
 import { useState } from "react";
 

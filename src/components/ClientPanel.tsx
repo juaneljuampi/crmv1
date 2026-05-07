@@ -159,96 +159,104 @@ export default function ClientPanel() {
     c.numero.includes(busqueda)
   );
 
-  return (
-    <div className="client-panel">
-      <h3 className="panel-title">Clientes</h3>
+ return (
+  <div className="panel">
+    <h3 className="panel-title">Gestión de Clientes</h3>
 
-      {/* 🔍 BUSCAR CLIENTE */}
+    {/* 🔍 FILTROS */}
+    <div className="filters">
       <input
-        className="panel-input"
-        placeholder="Buscar por número cliente"
+        placeholder="Número cliente"
         value={clienteId}
         onChange={(e) => setClienteId(e.target.value)}
       />
 
       <button onClick={handleSearchClient}>
-        {loading ? "Buscando..." : "Buscar"}
+        {loading ? "..." : "Buscar"}
       </button>
 
-      <hr />
-
-      {/* 🔎 BUSQUEDA */}
       <input
-        className="panel-input"
-        placeholder="Buscar por nombre o número"
+        placeholder="Buscar contacto"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
       />
 
-      {/* 🏷️ CATEGORIAS */}
       <select
-        className="panel-input"
         value={categoria}
         onChange={(e) => {
           setCategoria(e.target.value);
           buscarPorCategoria(e.target.value);
         }}
       >
-        <option value="">Seleccionar categoría</option>
+        <option value="">Categoría</option>
         <option value="ventas">Ventas</option>
         <option value="socios">Socios</option>
         <option value="vip">VIP</option>
         <option value="cobranza">Cobranza</option>
       </select>
-
-      <hr />
-
-      {/* 🔥 CHECK TODOS */}
-      {contactosFiltrados.length > 0 && (
-        <div style={{ marginBottom: "10px" }}>
-          <input
-            type="checkbox"
-            checked={selectAll}
-            onChange={handleSelectAll}
-          />{" "}
-          Seleccionar todos
-        </div>
-      )}
-
-      {/* 📋 LISTA */}
-      {contactosFiltrados.map((item) => (
-        <div
-          key={item.id_contacto}
-          className="contact-card"
-          onClick={() => toggleSeleccion(item.id_contacto)}
-        >
-          <input
-            type="checkbox"
-            checked={seleccionados.includes(item.id_contacto)}
-            readOnly
-          />
-          <div>{item.nombre}</div>
-          <small>{item.numero}</small>
-          <span className="badge">{item.categoria}</span>
-        </div>
-      ))}
-
-      {/* 🔥 ACCIONES */}
-      {contactos.length > 0 && (
-        <>
-          <button className="btn-green" onClick={handleSendTemplate}>
-            Enviar Seleccionados
-          </button>
-
-          <button className="btn-orange" onClick={handleDeleteContact}>
-            Eliminar
-          </button>
-
-          <button className="btn-red" onClick={handleDeleteClient}>
-            Eliminar Cliente
-          </button>
-        </>
-      )}
     </div>
+
+    {/* 🔥 SELECT ALL */}
+    {contactosFiltrados.length > 0 && (
+      <div className="select-all">
+        <input
+          type="checkbox"
+          checked={selectAll}
+          onChange={handleSelectAll}
+        />
+        <span>Seleccionar todos</span>
+      </div>
+    )}
+
+    {/* 📋 TABLA */}
+    <table className="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nombre</th>
+          <th>Número</th>
+          <th>Categoría</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {contactosFiltrados.map((item) => (
+          <tr key={item.id_contacto}>
+            <td>
+              <input
+                type="checkbox"
+                checked={seleccionados.includes(item.id_contacto)}
+                onChange={() => toggleSeleccion(item.id_contacto)}
+              />
+            </td>
+            <td>{item.nombre}</td>
+            <td>{item.numero}</td>
+            <td>
+              <span className="badge">
+                {item.categoria}
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    {/* 🔥 BOTONES */}
+    {contactos.length > 0 && (
+      <div className="actions">
+        <button className="btn-green" onClick={handleSendTemplate}>
+          Enviar
+        </button>
+
+        <button className="btn-orange" onClick={handleDeleteContact}>
+          Eliminar
+        </button>
+
+        <button className="btn-red" onClick={handleDeleteClient}>
+          Eliminar Cliente
+        </button>
+      </div>
+    )}
+  </div>
   );
 }
