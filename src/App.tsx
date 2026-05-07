@@ -7,6 +7,7 @@ import "./styles/dashboard.css";
 import Categorias from "./pages/Categorias";
 import Mensajes from "./pages/Mensajes";
 import Dashboard from "./pages/Dashboard";
+import Chats from "./pages/Chats";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <MainLayout setPage={setPage}>
       {page === "dashboard" && <Dashboard />}
+      {page === "chats" && <Chats/>}
       {page === "clientes" && <Clientes />}
       {page === "categorias" && <Categorias />}
       {page === "mensajes" && <Mensajes />}
