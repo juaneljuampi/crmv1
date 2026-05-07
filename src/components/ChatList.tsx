@@ -17,8 +17,13 @@ useEffect(() => {
   fetch(`${import.meta.env.VITE_API_URL}/api/conversations`)
     .then(res => res.json())
     .then((data) => {
-      console.log("CONVERSACIONES:", data);
-      setConversations(data.conversations || data);
+      console.log("DATA:", data);
+
+      if (Array.isArray(data)) {
+        setConversations(data);
+      } else {
+        setConversations(data.conversations || []);
+      }
     })
     .catch(console.error);
 }, []);

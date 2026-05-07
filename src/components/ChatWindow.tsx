@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import socket from "../socket";
 import "../styles/chat.css";
+import MessageInput from "./MessageInput";
 
 type Props = {
   chatId: number | null;
@@ -19,41 +20,87 @@ export default function ChatWindow({ chatId, refresh }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const loadMessages = () => {
+  /**
+   * =========================
+   * CARGAR MENSAJES
+   * =========================
+   */
+  const loadMessages = async () => {
     if (!chatId) return;
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/messages?conversationId=${chatId}`)
-      .then(res => res.json())
-      .then(setMessages)
-      .catch(console.error);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/messages?conversationId=${chatId}`
+      );
+
+      const data = await res.json();
+
+      // 🔥 PROTECCIÓN IMPORTANTE
+      if (Array.isArray(data)) {
+        setMessages(data);
+      } else {
+        setMessages(data.messages || []);
+      }
+
+    } catch (error) {
+      console.error("Error cargando mensajes:", error);
+    }
   };
 
+  /**
+   * =========================
+   * EFFECT: CARGA INICIAL
+   * =========================
+   */
   useEffect(() => {
     loadMessages();
   }, [chatId, refresh]);
 
+  /**
+   * =========================
+   * SOCKET TIEMPO REAL
+   * =========================
+   */
   useEffect(() => {
-    socket.on("newMessage", (msg) => {
+    const handler = (msg: any) => {
       if (msg.conversationId === chatId) {
-        setMessages(prev => [...prev, msg]);
+        setMessages((prev) => [...prev, msg]);
       }
-    });
+    };
+
+    socket.on("newMessage", handler);
 
     return () => {
-      socket.off("newMessage");
+      socket.off("newMessage", handler);
     };
   }, [chatId]);
 
+  /**
+   * =========================
+   * AUTO SCROLL
+   * =========================
+   */
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  /**
+   * =========================
+   * EMPTY STATE
+   * =========================
+   */
   if (!chatId) {
     return <div className="chat-empty">Selecciona un chat</div>;
   }
 
+  /**
+   * =========================
+   * RENDER
+   * =========================
+   */
   return (
     <div className="chat-container whatsapp">
+      <MessageInput chatId={chatId} onMessageSent={loadMessages} />
 
       {/* HEADER */}
       <div className="chat-header-pro">
@@ -74,23 +121,25 @@ export default function ChatWindow({ chatId, refresh }: Props) {
 
           return (
             <div
-              key={msg.id || i}
+              key={msg.id ?? i}
               className={`message-row ${isMe ? "me" : "other"}`}
             >
               <div className={`bubble ${isMe ? "me" : "other"}`}>
                 {text}
-                <div className="time">
-                  {msg.timestamp
-                    ? new Date(msg.timestamp).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                    : ""}
-                </div>
+
+                {msg.timestamp && (
+                  <div className="time">
+                    {new Date(msg.timestamp).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           );
         })}
+
         <div ref={bottomRef} />
       </div>
     </div>

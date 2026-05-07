@@ -2,6 +2,7 @@
 import { useState } from "react";
 import ChatList from "../components/ChatList";
 import ChatWindow from "../components/ChatWindow";
+import "../styles/chat.css";
 
 export default function Chats() {
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
