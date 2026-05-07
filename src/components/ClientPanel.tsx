@@ -190,9 +190,9 @@ export default function ClientPanel() {
       >
         <option value="">Categoría</option>
         <option value="ventas">Ventas</option>
-        <option value="socios">Socios</option>
-        <option value="vip">VIP</option>
-        <option value="cobranza">Cobranza</option>
+        <option value="RRHH">RRHH</option>
+        <option value="Servicio al cliente">Servicio al cliente</option>
+        <option value="Contabilidad">Contabilidad</option>
       </select>
     </div>
 
