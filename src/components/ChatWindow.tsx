@@ -100,7 +100,6 @@ export default function ChatWindow({ chatId, refresh }: Props) {
    */
   return (
     <div className="chat-container whatsapp">
-      <MessageInput chatId={chatId} onMessageSent={loadMessages} />
 
       {/* HEADER */}
       <div className="chat-header-pro">
@@ -139,6 +138,7 @@ export default function ChatWindow({ chatId, refresh }: Props) {
             </div>
           );
         })}
+      <MessageInput chatId={chatId} onMessageSent={loadMessages} />
 
         <div ref={bottomRef} />
       </div>
