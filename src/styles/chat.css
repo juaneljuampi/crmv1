@@ -92,3 +92,6 @@
   margin-top: 4px;
   color: #6b7280;
 }
+.sidebar button.active {
+  background: #1e293b;
+}

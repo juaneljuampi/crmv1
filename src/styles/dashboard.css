@@ -343,3 +343,7 @@ body {
   margin: auto;
   color: #64748b;
 }
+
+.sidebar button.active {
+  background: #1e293b;
+}

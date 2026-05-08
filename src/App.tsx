@@ -4,8 +4,6 @@ import MainLayout from "./layouts/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Chats from "./pages/Chats";
 import Clientes from "./pages/Clientes";
-import Categorias from "./pages/Categorias";
-import Mensajes from "./pages/Mensajes";
 import Formulario1 from "./pages/Formulario1";
 
 export default function App() {
@@ -18,8 +16,8 @@ export default function App() {
           <Route index element={<Dashboard />} />
           <Route path="chats" element={<Chats />} />
           <Route path="clientes" element={<Clientes />} />
-          <Route path="categorias" element={<Categorias />} />
-          <Route path="mensajes" element={<Mensajes />} />
+          
+          
         </Route>
 
         {/* 🔥 FORMULARIO FUERA DEL DASHBOARD */}

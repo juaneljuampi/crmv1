@@ -54,3 +54,6 @@
   margin-bottom: 10px;
   cursor: pointer;
 }
+.sidebar button.active {
+  background: #1e293b;
+}
