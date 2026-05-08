@@ -164,6 +164,18 @@ export default function ClientPanel() {
     setCategorias((prev) => [...prev, nuevaCategoria]);
   };
 
+  const handleDeleteCategoria = () => {
+    const categoriaAEliminar = prompt("Categoría a eliminar")?.trim();
+
+    if (!categoriaAEliminar) return;
+
+    setCategorias((prev) => prev.filter((item) => item !== categoriaAEliminar));
+
+    if (categoria === categoriaAEliminar) {
+      setCategoria("");
+    }
+  };
+
   /**
    * ===============================
    * FILTRO TEXTO
@@ -211,6 +223,7 @@ export default function ClientPanel() {
       </select>
 
       <button onClick={handleAddCategoria}>Agregar categoría</button>
+      <button onClick={handleDeleteCategoria}>Eliminar categoría</button>
     </div>
 
     {/* 🔥 SELECT ALL */}
@@ -244,6 +257,7 @@ export default function ClientPanel() {
                 type="checkbox"
                 checked={seleccionados.includes(item.id_contacto)}
                 onChange={() => toggleSeleccion(item.id_contacto)}
+                
               />
             </td>
             <td>{item.nombre}</td>
