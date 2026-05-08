@@ -1,4 +1,5 @@
 import Card from "../components/Card";
+import "../styles/dashboard.css";
 
 
 export default function Dashboard() {
