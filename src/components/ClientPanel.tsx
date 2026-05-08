@@ -176,6 +176,22 @@ export default function ClientPanel() {
     }
   };
 
+  const handleEditCategoria = () => {
+    const categoriaAnterior = prompt("Categoría a editar")?.trim();
+    if (!categoriaAnterior || !categorias.includes(categoriaAnterior)) return;
+
+    const nuevaCategoria = prompt("Nuevo nombre de categoría")?.trim();
+    if (!nuevaCategoria || categorias.includes(nuevaCategoria)) return;
+
+    setCategorias((prev) =>
+      prev.map((item) => (item === categoriaAnterior ? nuevaCategoria : item))
+    );
+
+    if (categoria === categoriaAnterior) {
+      setCategoria(nuevaCategoria);
+    }
+  };
+
   /**
    * ===============================
    * FILTRO TEXTO
@@ -224,6 +240,7 @@ export default function ClientPanel() {
 
       <button onClick={handleAddCategoria}>Agregar categoría</button>
       <button onClick={handleDeleteCategoria}>Eliminar categoría</button>
+      <button onClick={handleEditCategoria}>Editar categoría</button>
     </div>
 
     {/* 🔥 SELECT ALL */}
