@@ -10,7 +10,7 @@ import Formulario1 from "./pages/Formulario1";
 
 export default function App() {
   return (
-    <BrowserRouter basename="/crmv1">
+    <BrowserRouter basename="/">
       <Routes>
 
         {/* 🔥 RUTAS CON DASHBOARD */}
