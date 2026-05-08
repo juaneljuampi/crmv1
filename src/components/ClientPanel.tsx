@@ -303,6 +303,10 @@ export default function ClientPanel() {
         <button className="btn-red" onClick={handleDeleteClient}>
           Eliminar Cliente
         </button>
+
+        <button className="btn-blue" onClick={handleSendTemplate}>
+          Enviar formulario personalizado
+        </button>
         
       </div>
     )}
