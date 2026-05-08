@@ -1,9 +1,15 @@
 /* CONTENEDOR */
 .chat-container.whatsapp {
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background: #efeae2;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  background: #000000;
+  z-index: 9999; /* asegurar que quede por encima */
 }
 
 /* HEADER */
@@ -13,12 +19,26 @@
   color: white;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+}
+
+.chat-header-pro {
+  padding: 12px 0; /* quitar padding horizontal para que el header llegue al borde */
+  background: #202c33;
+  color: white;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .chat-user {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0; /* quitar espacio interno entre elementos para que llegue al borde */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  justify-content: flex-start; /* asegurar que el contenido quede pegado al borde izquierdo */
 }
 
 .avatar {
@@ -47,6 +67,7 @@
   padding: 15px;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 /* FILAS */
