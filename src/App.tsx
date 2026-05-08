@@ -5,6 +5,9 @@ import Dashboard from "./pages/Dashboard";
 import Chats from "./pages/Chats";
 import Clientes from "./pages/Clientes";
 import Formulario1 from "./pages/Formulario1";
+import "./styles/dashboard.css";
+import "./styles/chat.css";
+import "./styles/home.css";
 
 export default function App() {
   return (

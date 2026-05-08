@@ -243,7 +243,7 @@ body {
 .chat-sidebar {
   width: 280px;
   background: #0f172a;
-  color: white;
+  color: rgb(27, 20, 20);
   padding: 10px;
   overflow-y: auto;
 }
