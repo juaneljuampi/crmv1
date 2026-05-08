@@ -1,5 +1,6 @@
 // src/components/Sidebar.tsx
 import { useNavigate, useLocation } from "react-router-dom";
+import "../styles/dashboard.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();

@@ -1,4 +1,5 @@
 // src/components/ChatList.tsx
+import"../styles/dashboard.css";
 import { useEffect, useState } from "react";
 
 type Conversation = {

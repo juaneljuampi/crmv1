@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import socket from "../socket";
 import "../styles/chat.css";
 import MessageInput from "./MessageInput";
+import "../styles/dashboard.css";
 
 type Props = {
   chatId: number | null;

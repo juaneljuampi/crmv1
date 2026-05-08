@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/home.css";
+import "../styles/dashboard.css";
 
 import {
   getCliente,
