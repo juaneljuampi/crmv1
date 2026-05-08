@@ -1,59 +1,305 @@
-.client-panel {
-  position: fixed;
-  left: 260px;
-  top: 0;
-  bottom: 0;
-  width: 320px;
-  background: #111;
+/* =========================
+   RESET GLOBAL
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f1f5f9;
+  overflow-x: hidden;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+  width: 240px;
+  background: #0f172a;
   color: white;
-  padding: 16px;
-  overflow-y: auto;
-  border-right: 1px solid #2c2c2c;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .logo {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.sidebar button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.sidebar button:hover {
+  background: #1e293b;
+}
+
+.sidebar button.active {
+  background: #2563eb;
+}
+
+/* =========================
+   MAIN
+========================= */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* =========================
+   CONTENT (🔥 FULL WIDTH)
+========================= */
+.content {
+  flex: 1;
+  width: 100%;
+  padding: 30px;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* =========================
+   PANEL (CLIENTES)
+========================= */
+.panel {
+  width: 100%;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
 .panel-title {
-  font-size: 20px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.panel-input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  margin-bottom: 10px;
+/* =========================
+   FILTROS
+========================= */
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-.panel-btn {
-  width: 100%;
+.filters input,
+.filters select {
   padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 8px;
+  background: #f9fafb;
+}
+
+.filters button {
+  background: #2563eb;
+  color: white;
   border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 10px;
+}
+
+/* =========================
+   TABLA
+========================= */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background: #f8fafc;
+  text-align: left;
+  padding: 12px;
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.table tr:hover {
+  background: #f1f5f9;
+}
+
+/* =========================
+   SELECT ALL
+========================= */
+.select-all {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* =========================
+   BADGE
+========================= */
+.badge {
+  background: #e2e8f0;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* =========================
+   BOTONES
+========================= */
+.actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
 }
 
 .btn-green {
-  background: #1e9e45;
+  background: #22c55e;
   color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
 }
 
 .btn-orange {
-  background: orange;
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
 }
 
 .btn-red {
-  background: #d32f2f;
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+/* =========================
+   CHAT LAYOUT
+========================= */
+.chat-layout {
+  display: flex;
+  height: 100%;
+}
+
+/* SIDEBAR CHAT */
+.chat-sidebar {
+  width: 280px;
+  background: #0f172a;
+  color: white;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-item {
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.chat-item:hover {
+  background: #1e293b;
+}
+
+.chat-item.active {
+  background: #2563eb;
+}
+
+/* CHAT MAIN */
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f1f5f9;
+}
+
+/* MENSAJES */
+.chat-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+/* INPUT */
+.chat-input {
+  display: flex;
+  padding: 10px;
+  background: white;
+  border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.chat-input button {
+  padding: 10px;
+  background: #22c55e;
+  border: none;
   color: white;
 }
 
-.contact-card {
-  padding: 10px;
-  border: 1px solid #333;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-.sidebar button.active {
-  background: #1e293b;
+/* EMPTY */
+.chat-empty {
+  margin: auto;
+  color: #64748b;
 }
