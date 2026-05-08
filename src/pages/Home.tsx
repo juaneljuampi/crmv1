@@ -2,7 +2,7 @@ import Sidebar from "../components/Sidebar";
 import ClientPanel from "../components/ClientPanel";
 import ChatModal from "../components/ChatModal";
 import "../styles/dashboard.css";
-import "../styles/home.css";
+
 import { useState } from "react";
 
 export default function Home() {
