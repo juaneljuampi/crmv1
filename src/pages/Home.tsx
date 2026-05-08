@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <div className="app">
-      <Sidebar onSelectChat={setSelectedChat} />
+      <Sidebar />
 
       <ClientPanel />
 
