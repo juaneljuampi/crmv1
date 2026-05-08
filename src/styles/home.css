@@ -7,10 +7,15 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #f1f5f9;
-  overflow-x: hidden;
+  background: #030303;
+  overflow: hidden;
+  min-height: 100%;
 }
 
 /* =========================
@@ -18,7 +23,7 @@ body {
 ========================= */
 .layout {
   display: flex;
-  height: 100vh;
+  height: 100vh; /* fill viewport */
   width: 100%;
 }
 
@@ -67,6 +72,8 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 0; /* allow children to scroll */
 }
 
 /* =========================
@@ -88,15 +95,20 @@ body {
   flex: 1;
   width: 100%;
   padding: 30px;
+  min-height: 0;
+  overflow: auto; /* prevent content from overflowing */
 }
 
 /* =========================
    DASHBOARD
 ========================= */
 .dashboard {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
+  align-items: stretch;
+  grid-auto-rows: minmax(0, 1fr); /* make grid items fill available height */
 }
 
 .card {
@@ -105,6 +117,9 @@ body {
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   transition: 0.2s;
+  height: 100%; /* ensure cards stretch to fill grid cell */
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
