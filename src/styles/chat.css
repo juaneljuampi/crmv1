@@ -1,79 +1,280 @@
-/* CONTENEDOR */
-.chat-container.whatsapp {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  min-height: 100vh;
-  background: #000000;
-  z-index: 9999; /* asegurar que quede por encima */
-}
-
-/* HEADER */
-.chat-header-pro {
-  padding: 12px 16px;
-  background: #202c33;
-  color: white;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.chat-header-pro {
-  padding: 12px 0; /* quitar padding horizontal para que el header llegue al borde */
-  background: #202c33;
-  color: white;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.chat-user {
-  display: flex;
-  align-items: center;
-  gap: 0; /* quitar espacio interno entre elementos para que llegue al borde */
+/* =========================
+   RESET GLOBAL
+========================= */
+* {
   margin: 0;
   padding: 0;
-  width: 100%;
-  justify-content: flex-start; /* asegurar que el contenido quede pegado al borde izquierdo */
+  box-sizing: border-box;
 }
 
-.avatar {
-  background: #54656f;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f1f5f9;
+  overflow-x: hidden;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.layout {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 100vh;
+  width: 100%;
 }
 
-.name {
-  font-weight: bold;
-}
-
-.status {
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-/* BODY */
-.chat-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 15px;
+/* =========================
+   SIDEBAR (AZUL SaaS)
+========================= */
+.sidebar {
+  width: 240px;
+  background: #1e40af;
+  color: white;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  padding: 20px;
 }
 
-/* FILAS */
+.sidebar .logo {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.sidebar button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: 0.2s;
+}
+
+.sidebar button:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.sidebar button.active {
+  background: rgba(255,255,255,0.2);
+}
+
+/* =========================
+   MAIN
+========================= */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header {
+  background: white;
+  padding: 15px 25px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* =========================
+   CONTENT (FULL WIDTH)
+========================= */
+.content {
+  flex: 1;
+  width: 100%;
+  padding: 30px;
+}
+
+/* =========================
+   PANEL (CARD)
+========================= */
+.panel {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+/* TITULOS */
+.panel-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.panel-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   FILTROS / BUSCADOR
+========================= */
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filters input,
+.filters select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.filters button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* =========================
+   TABLA PROFESIONAL
+========================= */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  font-size: 12px;
+  color: #64748b;
+  padding: 12px;
+}
+
+.table td {
+  padding: 14px 12px;
+  border-top: 1px solid #eee;
+}
+
+.table tr:hover {
+  background: #f9fafb;
+}
+
+/* =========================
+   CHECKBOX / SELECT
+========================= */
+.select-all {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* =========================
+   BADGE
+========================= */
+.badge {
+  background: #dcfce7;
+  color: #166534;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* =========================
+   BOTONES
+========================= */
+.actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-green {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.btn-orange {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.btn-red {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+/* =========================
+   CHAT (WHATSAPP STYLE)
+========================= */
+.chat-layout {
+  display: flex;
+  height: calc(100vh - 60px);
+  width: 100%;
+}
+
+/* SIDEBAR CHAT */
+.chat-sidebar {
+  width: 300px;
+  min-width: 280px;
+  background: #0f172a;
+  color: white;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-item {
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.chat-item:hover {
+  background: #1e293b;
+}
+
+.chat-item.active {
+  background: #2563eb;
+}
+
+/* CHAT DERECHO */
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #e5ddd5;
+}
+
+/* HEADER CHAT */
+.chat-header-pro {
+  padding: 15px;
+  background: #075e54;
+  color: white;
+}
+
+/* MENSAJES */
+.chat-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* BURBUJAS */
 .message-row {
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .message-row.me {
@@ -84,35 +285,46 @@
   justify-content: flex-start;
 }
 
-/* BURBUJAS */
 .bubble {
   max-width: 60%;
-  padding: 10px 12px;
+  padding: 10px;
   border-radius: 10px;
-  font-size: 14px;
-  position: relative;
-  display: inline-block;
 }
 
-/* MENSAJES MIOS */
 .bubble.me {
-  background: #d9fdd3;
-  border-bottom-right-radius: 0;
+  background: #dcf8c6;
 }
 
-/* MENSAJES OTRO */
 .bubble.other {
   background: white;
-  border-bottom-left-radius: 0;
 }
 
-/* HORA */
-.time {
-  font-size: 10px;
-  text-align: right;
-  margin-top: 4px;
-  color: #6b7280;
+/* INPUT CHAT */
+.chat-input-pro {
+  display: flex;
+  padding: 10px;
+  background: #f0f2f5;
 }
-.sidebar button.active {
-  background: #1e293b;
+
+.input-pro {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.send-btn {
+  margin-left: 10px;
+  padding: 10px;
+  background: #22c55e;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* EMPTY */
+.chat-empty {
+  margin: auto;
+  color: #64748b;
 }
