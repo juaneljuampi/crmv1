@@ -25,6 +25,12 @@ export default function ClientPanel() {
 
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("");
+  const [categorias, setCategorias] = useState<string[]>([
+    "ventas",
+    "RRHH",
+    "Servicio al cliente",
+    "Contabilidad",
+  ]);
   const [selectAll, setSelectAll] = useState(false); // 🔥 NUEVO
 
   /**
@@ -149,6 +155,15 @@ export default function ClientPanel() {
     alert("Formulario enviado");
   };
 
+  const handleAddCategoria = () => {
+    const nuevaCategoria = prompt("Nueva categoría")?.trim();
+
+    if (!nuevaCategoria) return;
+    if (categorias.includes(nuevaCategoria)) return;
+
+    setCategorias((prev) => [...prev, nuevaCategoria]);
+  };
+
   /**
    * ===============================
    * FILTRO TEXTO
@@ -194,6 +209,8 @@ export default function ClientPanel() {
         <option value="Servicio al cliente">Servicio al cliente</option>
         <option value="Contabilidad">Contabilidad</option>
       </select>
+
+      <button onClick={handleAddCategoria}>Agregar categoría</button>
     </div>
 
     {/* 🔥 SELECT ALL */}
@@ -255,6 +272,7 @@ export default function ClientPanel() {
         <button className="btn-red" onClick={handleDeleteClient}>
           Eliminar Cliente
         </button>
+        
       </div>
     )}
   </div>

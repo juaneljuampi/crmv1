@@ -1,5 +1,6 @@
 import ChatWindow from "./ChatWindow";
 import MessageInput from "./MessageInput";
+import "../styles/dashboard.css";
 
 type Props = {
   selectedChat: number | null;

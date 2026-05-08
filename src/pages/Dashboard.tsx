@@ -5,6 +5,11 @@ import "../styles/dashboard.css";
 export default function Dashboard() {
   return (
     <div>
+            <div className="panel">
+        <h3>Gestión de Clientes</h3>
+        <>
+        </>
+      </div>
       {/* CARDS */}
       <div className="dashboard">
         <Card title="Clientes" value="120" />
@@ -12,12 +17,7 @@ export default function Dashboard() {
         <Card title="Mensajes" value="530" />
       </div>
 
-      {/* PANEL */}
-      <div className="panel">
-        <h3>Gestión de Clientes</h3>
-        <>
-        </>
-      </div>
+
     </div>
   );
 }
